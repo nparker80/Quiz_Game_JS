@@ -11,20 +11,29 @@
     <body>
         <h1>Welcome to the JavaScript Quiz!</h1>
         <div class="wrapper">
-            <p>Click the button to start the quiz. You have 60 seconds to answer 10 questions about JavaScript. Each incorrect answer will decrease the time by 3 seconds. At the end of the quiz you will be able to assign your initials and record your score. </p>
+            <p>Click the button to start the quiz. You have 60 seconds to answer 5 questions about JavaScript. Each incorrect answer will decrease the time by 3 seconds. At the end of the quiz you will be able to assign your initials and record your score. </p>
             <div class="container">
               <div class="card-contents" >
-                 <button>Start Quiz</button>
+                 <button id="startQuiz">Start Quiz</button>
               </div>
             </div>
         </div>
-          
+        <div id = "choices"></div>
+
+    <!-- 4 buttons for answer choices -->
+    <!-- element for time remaining
+        element for score
+        question number user is on
+        element for question
+     -->
+      
         
     
 
 
 
 
+        <script src="questions.js"></script>
         <script src="script.js"></script>
     </body>
 </html>
