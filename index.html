@@ -10,15 +10,35 @@
 
     <body>
         <h1>Welcome to the JavaScript Quiz!</h1>
-        <div class="wrapper">
+        <div class="HomePage">
             <p>Click the button to start the quiz. You have 60 seconds to answer 5 questions about JavaScript. Each incorrect answer will decrease the time by 3 seconds. At the end of the quiz you will be able to assign your initials and record your score. </p>
             <div class="container">
               <div class="card-contents" >
-                 <button id="startQuiz">Start Quiz</button>
+                <button id="startQuiz">Start Quiz</button>
+                <span id = "time">Time: 0</span>
+                <span id = "score">Score: 0</span>
               </div>
             </div>
         </div>
-        <div id = "choices"></div>
+
+        <section class = "quiz-container">
+            <h3 id= "question-field">Question</h3>
+            <button type="button" id="answerBtn0"></button>
+            <button type="button" id="answerBtn1"></button>
+            <button type="button" id="answerBtn2"></button>
+            <button type="button" id="answerBtn3"></button>     
+        </section>
+
+        <section class = "submit-quiz">
+
+            <h2>Quiz Complete!</h2>        
+            <p id = "user-score"></p>  
+            <form class="form-user-input">
+                <label for="new-score">Enter Initials</label>
+                <input type = "text" id = "userInitials">
+                <button type = "button" class = "submitBtn">High Scores</button>
+            </form>
+        </section>
 
     <!-- 4 buttons for answer choices -->
     <!-- element for time remaining
@@ -26,14 +46,6 @@
         question number user is on
         element for question
      -->
-      
-        
-    
-
-
-
-
-        <script src="questions.js"></script>
         <script src="script.js"></script>
     </body>
 </html>
