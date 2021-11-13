@@ -24,6 +24,7 @@ const questions = [
 ];
 
 const startBtn = document.getElementById("startQuiz");
+const submitBtn = document.querySelector("button.submitBtn");
 const answerBtn0 = document.getElementById("answerBtn0");
 const answerBtn1 = document.getElementById("answerBtn1");
 const answerBtn2 = document.getElementById("answerBtn2");
@@ -31,23 +32,23 @@ const answerBtn3 = document.getElementById("answerBtn3");
 const timeEl = document.getElementById("time");
 const scoreEl = document.getElementById("score");
 const questionText = document.getElementById("question-field");
+const submitScoreElement = document.querySelector("#submit-score");
+let restartBtn = document.querySelector("#restartBtn");
+let clearBtn = document.querySelector("#clearBtn");
+// let scoreList = document.getElementById("#scoreList");
 
+let userNameInput;
+let userScore = document.getElementById("user-score");
 let score = 0;
 let questionNumber = -1;
 let correctAnswer;
 let clonedQuestions = [...questions];
-let secondsLeft;
+let secondsLeft = clonedQuestions.length * 10 + 1;
 let countdown;
 
-//create variables for elements referenced in HTML
-//add event listeners for all 5 buttons
-//type out functions needed; begin/reset game,
-
 function startQuiz() {
-  secondsLeft = clonedQuestions.length * 12 + 1;
-  score = 0;
-  questionNumber = -1;
-  scoreEl.textContent = score;
+  document.getElementById("welcome").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
   startBtn.disabled = true;
   answerBtn0.disabled = false;
   answerBtn1.disabled = false;
@@ -61,6 +62,7 @@ function startQuiz() {
 
 function endQuiz() {
   clearInterval(countdown);
+  setTimeout(displayScore, 500);
   answerBtn0.disabled = true;
   answerBtn1.disabled = true;
   answerBtn2.disabled = true;
@@ -71,7 +73,8 @@ function setTime() {
   countdown = setInterval(function () {
     secondsLeft--;
     timeEl.textContent = "Time: " + secondsLeft;
-    if (secondsLeft === 0) {
+
+    if (secondsLeft === 0 || questionNumber === clonedQuestions.length) {
       endQuiz();
     }
   }, 1000);
@@ -104,6 +107,35 @@ function handleAnswer(choice) {
   handleNextQuestion();
 }
 
+function displayScore() {
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("submit-score").style.display = "block";
+  userScore.textContent = "Your Score:" + secondsLeft + "!";
+}
+
+function addScore() {
+  userNameInput = document.getElementById("userInitials").value;
+
+  let newScore = {
+    name: userNameInput,
+    score: secondsLeft,
+  };
+
+  let highScores = JSON.parse(localStorage.getItem("Scores") || "[]");
+  highScores.push(newScore);
+  localStorage.setItem("highScores", JSON.stringify(highScores));
+}
+
+// var allScores = localStorage.getItem("allScores");
+// topRank = JSON.parse(allScores);
+// if (allScores !== null) {
+//   for (var i = 0; i < allScores.length; i++) {
+//     var createLi = document.createElement("li");
+//     createLi.textContent = allScores[i].initials + " " + allScores[i].score;
+//     scoreList.appendChild(createLi);
+//   }
+// }
+
 startBtn.addEventListener("click", startQuiz);
 answerBtn0.addEventListener("click", () => {
   handleAnswer(0);
@@ -116,4 +148,14 @@ answerBtn2.addEventListener("click", () => {
 });
 answerBtn3.addEventListener("click", () => {
   handleAnswer(3);
+});
+submitBtn.addEventListener("click", function (event) {
+  event.stopPropagation();
+  addScore();
+});
+clearBtn.addEventListener("click", function () {
+  localStorage.clear();
+});
+restartBtn.addEventListener("click", function () {
+  window.location.replace("./index.html");
 });
