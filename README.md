@@ -25,4 +25,4 @@ The rank of the user and game score will be recorded and shown on the final scre
 <br>
 
 <br>
-<a href = "https://nparker80.github.io/Quiz_Game_JavaScript/">Link to Quiz</a>
+<a href = "https://nparker80.github.io/Quiz_Game_JS/">Link to Quiz</a>
