@@ -9,13 +9,11 @@ const questions = [
     ],
     answer: 1,
   },
-
   {
     question: "Which of the following is a primitive data type in JavaScript?",
     choices: ["Boolean", "String", "Number", "All of the above"],
     answer: 3,
   },
-
   {
     question: "What will the following code return: Boolean(10>9):",
     choices: ["NaN", "True", "False", "None of the above"],
@@ -23,58 +21,92 @@ const questions = [
   },
 ];
 
-const startBtn = document.getElementById("startQuiz");
-const submitBtn = document.querySelector("button.submitBtn");
-const answerBtn0 = document.getElementById("answerBtn0");
-const answerBtn1 = document.getElementById("answerBtn1");
-const answerBtn2 = document.getElementById("answerBtn2");
-const answerBtn3 = document.getElementById("answerBtn3");
-const timeEl = document.getElementById("time");
-const scoreEl = document.getElementById("score");
-const questionText = document.getElementById("question-field");
-const submitScoreElement = document.querySelector("#submit-score");
-let restartBtn = document.querySelector("#restartBtn");
-let clearBtn = document.querySelector("#clearBtn");
-// let scoreList = document.getElementById("#scoreList");
+//#region Variables
+//#region Constants
+// header
+const timeEl = document.getElementById("time-span");
+const scoreEl = document.getElementById("score-span");
 
-let userNameInput;
-let userScore = document.getElementById("user-score");
-let score = 0;
-let questionNumber = -1;
-let correctAnswer;
+// start div
+const startContainer = document.getElementById("start-div");
+const startBtn = document.getElementById("start-btn");
+const viewScoresBtn = document.getElementById("viewscores-btn");
+
+// quiz div
+const quizContainer = document.getElementById("quiz-div");
+const questionText = document.getElementById("question-field");
+const answerBtn0 = document.getElementById("answer-btn0");
+const answerBtn1 = document.getElementById("answer-btn1");
+const answerBtn2 = document.getElementById("answer-btn2");
+const answerBtn3 = document.getElementById("answer-btn3");
+
+// complete div
+const completeContainer = document.getElementById("complete-div");
+const userScore = document.getElementById("user-score");
+const scoreInitialsInput = document.getElementById("score-initials-input");
+const submitBtn = document.getElementById("submit-btn");
+
+// highScore div
+const highScoresContainer = document.getElementById("high-score-div");
+const rankH1 = document.getElementById("rank-h1");
+const scoreList = document.getElementById("score-list");
+const restartBtn = document.getElementById("restart-btn");
+const clearBtn = document.getElementById("clear-btn");
+//#endregion
+
+//#region let
+let highScores = [];
 let clonedQuestions = [...questions];
 let secondsLeft = clonedQuestions.length * 10 + 1;
+let score = 0;
 let countdown;
+let correctAnswer;
+
+//#endregion
+//#endregion
+
+function resetQuiz() {
+  quizContainer.style.display = "none";
+  completeContainer.style.display = "none";
+  highScoresContainer.style.display = "none";
+  startContainer.style.display = "block";
+  clonedQuestions = [...questions];
+  secondsLeft = clonedQuestions.length * 10 + 1;
+  setTime(secondsLeft);
+  score = 0;
+  setScore(score);
+}
 
 function startQuiz() {
-  document.getElementById("welcome").style.display = "none";
-  document.getElementById("quiz").style.display = "block";
-  startBtn.disabled = true;
-  answerBtn0.disabled = false;
-  answerBtn1.disabled = false;
-  answerBtn2.disabled = false;
-  answerBtn3.disabled = false;
+  startContainer.style.display = "none";
+  quizContainer.style.display = "block";
 
-  setTime();
-
+  startTimer();
   handleNextQuestion();
 }
 
 function endQuiz() {
+  quizContainer.style.display = "none";
+  completeContainer.style.display = "block";
   clearInterval(countdown);
-  setTimeout(displayScore, 500);
-  answerBtn0.disabled = true;
-  answerBtn1.disabled = true;
-  answerBtn2.disabled = true;
-  answerBtn3.disabled = true;
+  setTime(secondsLeft);
+  score += secondsLeft;
+  setScore(score);
 }
 
-function setTime() {
+function setTime(seconds) {
+  timeEl.textContent = "Time: " + seconds;
+}
+
+function setScore(points) {
+  scoreEl.textContent = "Score: " + points;
+}
+
+function startTimer() {
   countdown = setInterval(function () {
     secondsLeft--;
-    timeEl.textContent = "Time: " + secondsLeft;
-
-    if (secondsLeft === 0 || questionNumber === clonedQuestions.length) {
+    setTime(secondsLeft);
+    if (secondsLeft === 0) {
       endQuiz();
     }
   }, 1000);
@@ -100,7 +132,7 @@ function handleNextQuestion() {
 function handleAnswer(choice) {
   if (choice === correctAnswer) {
     score++;
-    scoreEl.textContent = score;
+    setScore(score);
   } else {
     secondsLeft -= 5;
   }
@@ -108,35 +140,44 @@ function handleAnswer(choice) {
 }
 
 function displayScore() {
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("submit-score").style.display = "block";
-  userScore.textContent = "Your Score:" + secondsLeft + "!";
+  startContainer.style.display = "none";
+  quizContainer.style.display = "none";
+  completeContainer.style.display = "none";
+  highScoresContainer.style.display = "block";
+  userScore.textContent = "Your Score: " + score + "!";
+  highScores = JSON.parse(localStorage.getItem("highScores") || "[]");
+  let newChildren = highScores
+    .map((hs, i) => {
+      return "<li>" + hs.name + ", " + hs.score + "</li>";
+    })
+    .join("");
+  scoreList.innerHTML = newChildren;
 }
 
-function addScore() {
-  userNameInput = document.getElementById("userInitials").value;
+function submitScore() {
+  let userNameInput = scoreInitialsInput.value;
 
   let newScore = {
     name: userNameInput,
-    score: secondsLeft,
+    score: score,
   };
 
-  let highScores = JSON.parse(localStorage.getItem("Scores") || "[]");
   highScores.push(newScore);
+  highScores.sort((a, b) => b.score - a.score);
   localStorage.setItem("highScores", JSON.stringify(highScores));
+  scoreInitialsInput.textContent = null;
+  let userRank =
+    highScores.findIndex((hs) => {
+      return hs.name === newScore.name && hs.score === newScore.score;
+    }) + 1;
+  rankH1.textContent = "Rank " + userRank;
+  displayScore();
 }
 
-// var allScores = localStorage.getItem("allScores");
-// topRank = JSON.parse(allScores);
-// if (allScores !== null) {
-//   for (var i = 0; i < allScores.length; i++) {
-//     var createLi = document.createElement("li");
-//     createLi.textContent = allScores[i].initials + " " + allScores[i].score;
-//     scoreList.appendChild(createLi);
-//   }
-// }
-
 startBtn.addEventListener("click", startQuiz);
+viewScoresBtn.addEventListener("click", () => {
+  displayScore();
+});
 answerBtn0.addEventListener("click", () => {
   handleAnswer(0);
 });
@@ -149,13 +190,14 @@ answerBtn2.addEventListener("click", () => {
 answerBtn3.addEventListener("click", () => {
   handleAnswer(3);
 });
-submitBtn.addEventListener("click", function (event) {
-  event.stopPropagation();
-  addScore();
+submitBtn.addEventListener("click", () => {
+  submitScore();
 });
-clearBtn.addEventListener("click", function () {
+clearBtn.addEventListener("click", () => {
   localStorage.clear();
 });
-restartBtn.addEventListener("click", function () {
-  window.location.replace("./index.html");
+restartBtn.addEventListener("click", () => {
+  resetQuiz();
 });
+
+resetQuiz();

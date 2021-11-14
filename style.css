@@ -10,6 +10,7 @@ h1 {
 }
 
 button {
+  width: 50%;
   padding: 15px;
   margin: 15px;
   cursor: pointer;
@@ -20,7 +21,7 @@ button {
 }
 
 .container-start {
-  display: block;
+  display: flex;
   margin: 70px auto;
   border-radius: 20px 20px 0 0;
   text-align: center;
@@ -29,30 +30,16 @@ button {
   background-color: rgb(125, 180, 139);
 }
 
-.wrapper p {
-  font-size: 17px;
-  text-align: center;
-  align-self: center;
-  width: 50vw;
-}
-
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
-}
-
-.card-contents {
-  padding: 5px 5px 10px 5px;
-}
-
-#time {
+#time-span {
+  padding: 20px;
   font-size: 24px;
   float: right;
 }
 
-#score {
+#score-span {
+  padding: 20px;
   font-size: 24px;
+  float: left;
 }
 
 #quiz {
@@ -61,4 +48,86 @@ button {
 
 #submit-score {
   display: none;
+}
+
+.container-quiz {
+  margin-top: 2%;
+  padding: 110px 70px 10px 70px;
+}
+
+#answer-btn0 {
+  background-color: rgb(56, 170, 132);
+  width: 25%;
+}
+
+#answer-btn1 {
+  background-color: rgb(56, 170, 132);
+  width: 25%;
+}
+
+#answer-btn2 {
+  background-color: rgb(56, 170, 132);
+  width: 25%;
+}
+
+#answer-btn3 {
+  background-color: rgb(56, 170, 132);
+  width: 25%;
+}
+
+.container-complete {
+  margin-top: 2%;
+  padding: 110px 70px 10px 70px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.form-group {
+  height: 500px;
+}
+
+.form-container {
+  text-align: left;
+  font-size: 30px;
+  font-weight: bolder;
+}
+
+#score-initials-input {
+  width: 10%;
+  margin-top: 2%;
+  background-color: rgb(56, 170, 132);
+}
+
+#submit-btn {
+  background-color: rgb(56, 170, 132);
+  margin-top: 12%;
+  width: 25%;
+}
+
+.container-high-score {
+  margin-top: 2%;
+  font-size: larger;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  padding-top: 20px;
+  text-align: left;
+}
+#rank-h1 {
+  margin-top: 5%;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+#restart-btn {
+  font-size: 50px;
+  background-color: rgb(56, 170, 132);
+  margin-top: 5%;
+  width: 15%;
+  font-size: 25px;
+}
+#clear-btn {
+  background-color: rgb(56, 170, 132);
+  margin-top: 12%;
+  width: 15%;
+  font-size: 25px;
 }
